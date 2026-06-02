@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConvertFlow — PDF, Word & Image Converter</title>
+  <meta name="description" content="Convert PDF to JPG, PNG, Word. Convert Word to PDF. Convert images to PDF. No quality loss, instant, free." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">ConvertFlow</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO (compact) ===== -->
+  <section class="hero">
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">
+        Convert Any File —
+        <span class="gradient-text">Free & Instant</span>
+      </h1>
+      <p class="hero-subtitle">
+        PDF ↔ Word · PDF → Images · Images → PDF · No quality loss
+      </p>
+      <a href="#converter" class="hero-cta">Start Converting ↓</a>
+    </div>
+  </section>
+
+  <!-- ===== CONVERTER ===== -->
+  <section class="converter-section" id="converter">
+    <div class="container">
+
+      <div class="converter-card">
+
+        <!-- ── STEP 1: UPLOAD ── -->
+        <div class="step-block" id="step1">
+          <div class="step-header">
+            <span class="step-num">1</span>
+            <div>
+              <h3 class="step-title">Upload Your File(s)</h3>
+              <p class="step-desc">PDF, Word, or Images — drag &amp; drop or browse</p>
+            </div>
+          </div>
+
+          <!-- Drop Zone -->
+          <div class="drop-zone" id="dropZone">
+            <div class="drop-icon">📂</div>
+            <p class="drop-text">Drag &amp; drop file(s) here</p>
+            <p class="drop-or">or</p>
+            <label for="fileInput" class="file-label">Browse Files</label>
+            <!-- multiple + capture="environment" helps mobile camera/gallery -->
+            <input type="file" id="fileInput"
+              accept=".pdf,.docx,.doc,.jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp"
+              multiple hidden />
+            <p class="drop-formats">PDF · DOCX · JPG · PNG · BMP · GIF · TIFF · WEBP</p>
+          </div>
+
+          <!-- File preview list -->
+          <div class="file-info-bar hidden" id="fileInfoBar">
+            <div class="file-list" id="fileList"></div>
+            <div class="file-type-row">
+              <label class="type-label">File Type:</label>
+              <div class="type-chips" id="typeChips"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="step-divider"><span>▼</span></div>
+
+        <!-- ── STEP 2: OUTPUT FORMAT ── -->
+        <div class="step-block" id="step2">
+          <div class="step-header">
+            <span class="step-num">2</span>
+            <div>
+              <h3 class="step-title">Choose Output Format</h3>
+              <p class="step-desc">Tap a format to convert into it</p>
+            </div>
+          </div>
+
+          <div class="format-grid hidden" id="formatGrid"></div>
+          <p class="format-placeholder" id="formatPlaceholder">Upload a file first to see available formats</p>
+
+          <!-- Convert Button -->
+          <button class="convert-btn hidden" id="convertBtn" disabled>
+            <span class="convert-btn-icon">⚡</span>
+            <span id="convertBtnText">Convert Now</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="progress-area hidden" id="progressArea">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p class="progress-label" id="progressLabel">Processing…</p>
+      </div>
+
+      <!-- RESULT -->
+      <div class="result-area hidden" id="resultArea">
+        <div class="result-card">
+          <div class="result-icon">✅</div>
+          <h3 class="result-title">Conversion Complete!</h3>
+          <p class="result-sub" id="resultSub"></p>
+          <div class="result-downloads" id="resultDownloads"></div>
+          <button class="convert-again-btn" id="convertAgainBtn">Convert Another File</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 ConvertFlow — All processing happens in your browser. Nothing is uploaded.</p>
+    </div>
+  </footer>
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.2/docx.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

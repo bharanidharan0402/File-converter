@@ -1,0 +1,22 @@
+{
+  "name": "file-converter",
+  "version": "2.0.0",
+  "description": "Secure, In-Browser PDF, Word & Image Converter with zero server uploads.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/test-suite.js test/large-file-benchmarks.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "file-converter",
+    "pdf",
+    "docx",
+    "webp",
+    "png",
+    "jpeg",
+    "client-side",
+    "browser-converter"
+  ],
+  "author": "",
+  "license": "MIT"
+}

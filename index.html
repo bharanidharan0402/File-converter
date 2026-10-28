@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ConvertFlow — PDF, Word & Image Converter</title>
-  <meta name="description" content="Convert PDF to JPG, PNG, Word. Convert Word to PDF. Convert images to PDF. No quality loss, instant, free." />
+  <title>ConvertFlow — Secure In-Browser PDF, Word & Image Converter</title>
+  <meta name="description" content="Fast, 100% private in-browser file converter. Convert PDF to Images/Word, Word to PDF/Images, and Images to PDF/JPG/PNG/WEBP without uploading to any server." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -16,126 +16,205 @@
   <header class="header">
     <div class="container header-inner">
       <div class="logo">
-        <span class="logo-icon">⚡</span>
+        <span class="logo-icon" aria-hidden="true">⚡</span>
         <span class="logo-text">ConvertFlow</span>
+      </div>
+      <div class="privacy-badge" title="All processing occurs locally in your browser memory">
+        <span class="privacy-icon" aria-hidden="true">🔒</span>
+        <span class="privacy-text">100% Local &amp; Private</span>
       </div>
     </div>
   </header>
 
-  <!-- ===== HERO (compact) ===== -->
-  <section class="hero">
-    <div class="hero-glow hero-glow-1"></div>
-    <div class="hero-glow hero-glow-2"></div>
-    <div class="container hero-content">
-      <h1 class="hero-title">
-        Convert Any File —
-        <span class="gradient-text">Free & Instant</span>
-      </h1>
-      <p class="hero-subtitle">
-        PDF ↔ Word · PDF → Images · Images → PDF · No quality loss
-      </p>
-      <a href="#converter" class="hero-cta">Start Converting ↓</a>
-    </div>
-  </section>
+  <main>
+    <!-- ===== HERO ===== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <div class="hero-pill">
+          <span class="pill-dot" aria-hidden="true"></span>
+          <span>Zero Server Uploads · No File Size Leaks</span>
+        </div>
+        <h1 class="hero-title" id="hero-title">
+          Convert Files Instantly —
+          <span class="gradient-text">Private &amp; Free</span>
+        </h1>
+        <p class="hero-subtitle">
+          PDF ↔ Word (.docx) · PDF → Images · Images → PDF · JPG ↔ PNG ↔ WEBP
+        </p>
+        <div class="hero-meta-badges">
+          <span class="meta-badge">⚡ Instant Client-Side Processing</span>
+          <span class="meta-badge">📦 Batch ZIP Download</span>
+          <span class="meta-badge">🛡️ Memory &amp; Crash Protection</span>
+        </div>
+      </div>
+    </section>
 
-  <!-- ===== CONVERTER ===== -->
-  <section class="converter-section" id="converter">
-    <div class="container">
+    <!-- ===== CONVERTER ===== -->
+    <section class="converter-section" id="converter" aria-label="File Converter Tool">
+      <div class="container">
 
-      <div class="converter-card">
+        <!-- ERROR BANNER -->
+        <div class="error-banner hidden" id="errorBanner" role="alert" aria-live="assertive">
+          <div class="error-icon" aria-hidden="true">⚠️</div>
+          <div class="error-content">
+            <h4 class="error-title" id="errorTitle">An error occurred</h4>
+            <p class="error-message" id="errorMessage"></p>
+            <div class="error-details hidden" id="errorDetails"></div>
+          </div>
+          <div class="error-actions">
+            <button class="error-btn-dismiss" id="errorDismissBtn" type="button" aria-label="Dismiss error">✕</button>
+          </div>
+        </div>
 
-        <!-- ── STEP 1: UPLOAD ── -->
-        <div class="step-block" id="step1">
-          <div class="step-header">
-            <span class="step-num">1</span>
-            <div>
-              <h3 class="step-title">Upload Your File(s)</h3>
-              <p class="step-desc">PDF, Word, or Images — drag &amp; drop or browse</p>
+        <div class="converter-card">
+
+          <!-- ── STEP 1: UPLOAD ── -->
+          <div class="step-block" id="step1">
+            <div class="step-header">
+              <span class="step-num" aria-hidden="true">1</span>
+              <div>
+                <h2 class="step-title">Upload Your File(s)</h2>
+                <p class="step-desc">Drag &amp; drop or browse. PDF, Word (.docx), or Images.</p>
+              </div>
+            </div>
+
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Upload files: Drag and drop or press Enter to browse">
+              <div class="drop-icon" aria-hidden="true">📂</div>
+              <p class="drop-text">Drag &amp; drop file(s) here</p>
+              <p class="drop-or">or</p>
+              <button type="button" class="file-label" id="browseBtn" tabindex="-1">Browse Files</button>
+              <input type="file" id="fileInput"
+                accept=".pdf,.docx,.jpg,.jpeg,.png,.webp,.bmp,.gif"
+                multiple aria-hidden="true" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;" />
+              <p class="drop-formats">Supported: PDF · DOCX · JPG · PNG · WEBP · BMP · GIF</p>
+            </div>
+
+            <!-- File info bar -->
+            <div class="file-info-bar hidden" id="fileInfoBar">
+              <div class="file-list" id="fileList" aria-label="Selected files list"></div>
+              <div class="file-type-row">
+                <span class="type-label" id="fileTypeLabel">Detected Category:</span>
+                <div class="type-chips" id="typeChips" role="radiogroup" aria-labelledby="fileTypeLabel"></div>
+              </div>
             </div>
           </div>
 
-          <!-- Drop Zone -->
-          <div class="drop-zone" id="dropZone">
-            <div class="drop-icon">📂</div>
-            <p class="drop-text">Drag &amp; drop file(s) here</p>
-            <p class="drop-or">or</p>
-            <label for="fileInput" class="file-label">Browse Files</label>
-            <!-- multiple + capture="environment" helps mobile camera/gallery -->
-            <input type="file" id="fileInput"
-              accept=".pdf,.docx,.doc,.jpg,.jpeg,.png,.bmp,.gif,.tiff,.webp"
-              multiple hidden />
-            <p class="drop-formats">PDF · DOCX · JPG · PNG · BMP · GIF · TIFF · WEBP</p>
-          </div>
+          <!-- Divider -->
+          <div class="step-divider" aria-hidden="true"><span>▼</span></div>
 
-          <!-- File preview list -->
-          <div class="file-info-bar hidden" id="fileInfoBar">
-            <div class="file-list" id="fileList"></div>
-            <div class="file-type-row">
-              <label class="type-label">File Type:</label>
-              <div class="type-chips" id="typeChips"></div>
+          <!-- ── STEP 2: OUTPUT FORMAT ── -->
+          <div class="step-block" id="step2">
+            <div class="step-header">
+              <span class="step-num" aria-hidden="true">2</span>
+              <div>
+                <h2 class="step-title">Choose Output Format</h2>
+                <p class="step-desc">Select target format to convert into</p>
+              </div>
+            </div>
+
+            <div class="format-grid hidden" id="formatGrid" role="radiogroup" aria-label="Available output formats"></div>
+            <p class="format-placeholder" id="formatPlaceholder">Upload a file above to view available conversion formats</p>
+
+            <!-- Actions Bar -->
+            <div class="action-bar">
+              <button class="convert-btn hidden" id="convertBtn" type="button" disabled>
+                <span class="convert-btn-icon" aria-hidden="true">⚡</span>
+                <span id="convertBtnText">Convert Now</span>
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- Divider -->
-        <div class="step-divider"><span>▼</span></div>
-
-        <!-- ── STEP 2: OUTPUT FORMAT ── -->
-        <div class="step-block" id="step2">
-          <div class="step-header">
-            <span class="step-num">2</span>
-            <div>
-              <h3 class="step-title">Choose Output Format</h3>
-              <p class="step-desc">Tap a format to convert into it</p>
+        <!-- PROGRESS AREA -->
+        <div class="progress-area hidden" id="progressArea" aria-live="polite">
+          <div class="progress-card">
+            <div class="progress-header-row">
+              <span class="progress-label" id="progressLabel">Preparing conversion…</span>
+              <span class="progress-pct" id="progressPct">0%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <progress class="progress-bar-element" id="progressBar" value="0" max="100" aria-label="Conversion progress"></progress>
+            </div>
+            <div class="progress-actions">
+              <button class="cancel-btn" id="cancelBtn" type="button" aria-label="Cancel ongoing conversion">
+                <span class="cancel-icon" aria-hidden="true">✕</span>
+                <span>Cancel</span>
+              </button>
             </div>
           </div>
-
-          <div class="format-grid hidden" id="formatGrid"></div>
-          <p class="format-placeholder" id="formatPlaceholder">Upload a file first to see available formats</p>
-
-          <!-- Convert Button -->
-          <button class="convert-btn hidden" id="convertBtn" disabled>
-            <span class="convert-btn-icon">⚡</span>
-            <span id="convertBtnText">Convert Now</span>
-          </button>
         </div>
-      </div>
 
-      <!-- PROGRESS -->
-      <div class="progress-area hidden" id="progressArea">
-        <div class="progress-bar-wrap">
-          <div class="progress-bar" id="progressBar"></div>
+        <!-- RESULT AREA -->
+        <div class="result-area hidden" id="resultArea" tabindex="-1">
+          <div class="result-card">
+            <div class="result-icon" aria-hidden="true">🎉</div>
+            <h3 class="result-title">Conversion Complete!</h3>
+            <p class="result-sub" id="resultSub"></p>
+            
+            <!-- Batch ZIP button -->
+            <div class="batch-download-wrap hidden" id="batchDownloadWrap">
+              <button class="download-all-btn" id="downloadAllBtn" type="button">
+                <span aria-hidden="true">📦</span> Download All as ZIP (.zip)
+              </button>
+            </div>
+
+            <div class="result-downloads" id="resultDownloads" aria-label="Converted files for download"></div>
+            
+            <div class="result-footer-actions">
+              <button class="convert-again-btn" id="convertAgainBtn" type="button">Convert Another File</button>
+            </div>
+          </div>
         </div>
-        <p class="progress-label" id="progressLabel">Processing…</p>
-      </div>
 
-      <!-- RESULT -->
-      <div class="result-area hidden" id="resultArea">
-        <div class="result-card">
-          <div class="result-icon">✅</div>
-          <h3 class="result-title">Conversion Complete!</h3>
-          <p class="result-sub" id="resultSub"></p>
-          <div class="result-downloads" id="resultDownloads"></div>
-          <button class="convert-again-btn" id="convertAgainBtn">Convert Another File</button>
-        </div>
-      </div>
+        <!-- ACCORDION / CAPABILITIES SECTION -->
+        <section class="capabilities-section" aria-label="Conversion Capabilities & Technical Guidelines">
+          <div class="capabilities-header">
+            <h3>Technical Capabilities &amp; In-Browser Limits</h3>
+            <p>Every conversion is executed client-side inside your browser sandbox.</p>
+          </div>
+          <div class="capabilities-grid">
+            <div class="cap-card">
+              <h4>📄 PDF Processing</h4>
+              <p>Supports multi-page rendering to JPG/PNG/WEBP, vector docx conversion, and PDF page assembly. Handles documents up to ~100 MB safely depending on available device RAM.</p>
+            </div>
+            <div class="cap-card">
+              <h4>📝 Word (.docx)</h4>
+              <p>Converts Word XML documents to PDF with vector text, headings, lists, tables, and images. Legacy binary <code>.doc</code> files are identified with clear migration guidance.</p>
+            </div>
+            <div class="cap-card">
+              <h4>🖼️ Image Conversions</h4>
+              <p>Batch cross-conversion between JPG, PNG, and WEBP. Combine multi-image albums into single unified PDF documents with auto-fitted page boundaries.</p>
+            </div>
+            <div class="cap-card">
+              <h4>🛡️ Memory Management</h4>
+              <p>Memory-safe processing revokes Blob URLs, cleans graphics contexts, closes ImageBitmaps, and utilizes non-blocking async loops with full cancellation support.</p>
+            </div>
+          </div>
+        </section>
 
-    </div>
-  </section>
+      </div>
+    </section>
+  </main>
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
-    <div class="container">
-      <p>© 2025 ConvertFlow — All processing happens in your browser. Nothing is uploaded.</p>
+    <div class="container footer-inner">
+      <p>© 2026 ConvertFlow — 100% Client-Side. No telemetry, no backend, no server storage.</p>
     </div>
   </footer>
 
-  <!-- Libraries -->
+  <!-- Third-Party CDN Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.2/docx.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <!-- Main Application Script -->
   <script src="app.js"></script>
 </body>
 </html>
+
